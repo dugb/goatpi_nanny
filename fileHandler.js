@@ -1,20 +1,30 @@
-// Handles file operations ie getting most recent file in a folder.
+/**
+ * Handles file operations ie getting most recent file in a folder.
+ */
 
 const fs = require('fs')
 const config = require('./config');
 
-const SOURCEDIR = config.testImagesLocation;
+/** @type {string} */
+const SOURCE_DIR /** @type {string} */ = config.testImagesLocation;
 
 module.exports = class FileHandler {
-  constructor(sourcedir = undefined) {
-    this.sourceDir = sourcedir || SOURCEDIR;
+  constructor(src = undefined) {
+    this.sourceDir = src || SOURCE_DIR;
   }
 
-  async getMostRecentlyModifiedFile() {
-    return await this._getMostRecentlyModifiedFile(fs.readdirSync(this.sourceDir), this.sourceDir);
+  /**
+   * @returns {string}
+   */
+  getMostRecentlyModifiedFile() {
+    return this._getMostRecentlyModifiedFile(fs.readdirSync(this.sourceDir), this.sourceDir);
   }
 
-  // @private
+  /**
+   * @private
+   * @param {Array<string>} files 
+   * @param {string} path 
+   */
   _getMostRecentlyModifiedFile(files, path) {
     let out = [];
     files.forEach(function (file) {
