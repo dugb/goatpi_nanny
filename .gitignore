@@ -1,6 +1,12 @@
 # Keys
 keys.js
 
+# test images
+testImages
+
+# my testers
+test*
+
 # Logs
 logs
 *.log

@@ -5,7 +5,6 @@
 const fs = require('fs')
 const config = require('./config');
 
-/** @type {string} */
 const SOURCE_DIR /** @type {string} */ = config.testImagesLocation;
 
 module.exports = class FileHandler {
@@ -16,8 +15,8 @@ module.exports = class FileHandler {
   /**
    * @returns {string}
    */
-  getMostRecentlyModifiedFile() {
-    return this._getMostRecentlyModifiedFile(fs.readdirSync(this.sourceDir), this.sourceDir);
+  getMostRecentlyModifiedFile(dir) {
+    return this._getMostRecentlyModifiedFile(fs.readdirSync(dir), dir);
   }
 
   /**
