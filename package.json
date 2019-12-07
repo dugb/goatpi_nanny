@@ -1,0 +1,27 @@
+{
+  "name": "goatpi_nanny",
+  "version": "1.0.0",
+  "description": "Monitoring system for my goats.  Raspberry pi, sensors, camera.",
+  "main": "app.js",
+  "scripts": {
+    "test": "jasmine spec/spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dugb/goatpi_nanny.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dugb/goatpi_nanny/issues"
+  },
+  "homepage": "https://github.com/dugb/goatpi_nanny#readme",
+  "dependencies": {
+    "jimp": "^0.9.3",
+    "scp2": "^0.5.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^4.2.1"
+  }
+}
