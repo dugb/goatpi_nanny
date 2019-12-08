@@ -9,21 +9,25 @@ const keys = require('./keys');
 
 const IMAGE_QUALITY /** @type {number} */ = 85;
 const IMAGE_WIDTH /** @type {number} */ = 800;
-const SOURCE_DIR /** @type {string} */ = config.testImagesLocation;
 
 module.exports = class ImageHandler {
-  constructor(width = undefined, src = undefined, quality = undefined) {
+  constructor(width = undefined, quality = undefined) {
     this.imageWidth = width || IMAGE_WIDTH;
-    this.sourceDir = src || SOURCE_DIR;
     this.imageQuality = quality || IMAGE_QUALITY;
   }
 
   /**
-   * @param srcImage {string} the source png image file location.
-   * @param destImage {string} location to write the downsized jpg file.
+   * @param srcImagePath {string} the source image path.
+   * @param srcImageName {string} the source image name.
+   * @param destPath {string} the destination path for the downsized image.
    */
-  async resize(srcImage, destImage) {
-    await Jimp.read(srcImage).then(img => {
+  async resize(srcImagePath, srcImageName, destPath) {
+    console.log(srcImagePath);
+    console.log(srcImageName);
+    console.log(destPath);
+    let destImage = destPath + '/' + srcImageName.substr(0,15) + '-new.jpg';
+    console.log('dest: ', destImage);
+    await Jimp.read(srcImagePath).then(img => {
       img
         .resize(this.imageWidth, Jimp.AUTO)
         .quality(this.imageQuality)
