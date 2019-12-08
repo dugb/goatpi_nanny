@@ -9,12 +9,12 @@ const MINUTE = 60 * 1000;
 const INTERVAL = 2 * MINUTE;
 
 // where are the raw images?
-const RAWDIR = config.testImagesLocation;  // for dev.
-// const RAWDIR = keys.SOURCE;  // for prod.
+// const RAWDIR = config.testImagesLocation;  // for dev.
+const RAWDIR = keys.SOURCE;  // for prod.
 
 // where do we save resized images?
-const UPLOADDIR = config.testUploadDir; // for dev.
-// const UPLOADDIR = keys.RESIZE_DIR; // for prod.
+// const UPLOADDIR = config.testUploadDir; // for dev.
+const UPLOADDIR = keys.RESIZE_DIR; // for prod.
 
 const uploader = new UploadHandler();
 const images = new ImageHandler();
