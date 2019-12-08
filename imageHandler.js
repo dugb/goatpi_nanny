@@ -22,11 +22,7 @@ module.exports = class ImageHandler {
    * @param destPath {string} the destination path for the downsized image.
    */
   async resize(srcImagePath, srcImageName, destPath) {
-    console.log(srcImagePath);
-    console.log(srcImageName);
-    console.log(destPath);
     let destImage = destPath + '/' + srcImageName.substr(0,15) + '-new.jpg';
-    console.log('dest: ', destImage);
     await Jimp.read(srcImagePath).then(img => {
       img
         .resize(this.imageWidth, Jimp.AUTO)
