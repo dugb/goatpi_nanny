@@ -1,4 +1,5 @@
 // goatpi_nanny
+const mysql = require('mysql');
 const config = require('./config');
 const keys = require('./keys');
 const UploadHandler = require('./uploadHandler');
@@ -7,6 +8,20 @@ const FileHandler = require('./fileHandler');
 
 const MINUTE = 60 * 1000;
 const INTERVAL = 2 * MINUTE;
+
+const db = mysql.createConnection ({
+  host: keys.host,
+  user: keys.user,
+  password: keys.password,
+  database: keys.database,
+});
+db.connect((err) => {
+  if (err) {
+      throw err;
+  }
+  console.log('Connected to database');
+});
+global.db = db;
 
 // where are the raw images?
 // const RAWDIR = config.testImagesLocation;  // for dev.
@@ -21,16 +36,40 @@ const images = new ImageHandler();
 const files = new FileHandler();
 
 function main() {
-  // get most recent raw image.
-  const imageDir = RAWDIR + '/' + todayStr() + '/images/';
-  const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
-  const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
-  console.log('mostRecentImage: ', mostRecentImage);
-  // resize, save, upload.
-  images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
-    const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
-    uploader.upload(dest);
-  });
+  // // get most recent raw image.
+  // const imageDir = RAWDIR + '/' + todayStr() + '/images/';
+  // const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
+  // const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
+  // console.log('mostRecentImage: ', mostRecentImage);
+  // // resize, save, upload.
+  // images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
+  //   const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
+  //   uploader.upload(dest);
+  // });
+
+  // fetch data.
+  const data = fetchData();
+  writeData(data)
+}
+
+function writeData(data) {
+  // writes data to the database.
+  let query = "INSERT INTO GoatData (temp, level) VALUES('" + data.temp + "', '" + data.level + "');";
+  db.query(query, (err, result) => {
+    if (err) {
+        console.log('error: ', err);
+    }
+    console.log('db write successful');
+    });  
+}
+
+function fetchData() {
+  // returns test data.
+  return {
+    temp: 35,
+    level: 83,
+  }
+  
 }
 
 function todayStr() {
