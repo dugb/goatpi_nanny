@@ -9,19 +9,19 @@ const FileHandler = require('./fileHandler');
 const MINUTE = 60 * 1000;
 const INTERVAL = 2 * MINUTE;
 
-const db = mysql.createConnection ({
-  host: keys.host,
-  user: keys.user,
-  password: keys.password,
-  database: keys.database,
-});
-db.connect((err) => {
-  if (err) {
-      throw err;
-  }
-  console.log('Connected to database');
-});
-global.db = db;
+// const db = mysql.createConnection ({
+//   host: keys.host,
+//   user: keys.user,
+//   password: keys.password,
+//   database: keys.database,
+// });
+// db.connect((err) => {
+//   if (err) {
+//       throw err;
+//   }
+//   console.log('Connected to database');
+// });
+// global.db = db;
 
 // where are the raw images?
 // const RAWDIR = config.testImagesLocation;  // for dev.
@@ -36,20 +36,21 @@ const images = new ImageHandler();
 const files = new FileHandler();
 
 function main() {
-  // // get most recent raw image.
-  // const imageDir = RAWDIR + '/' + todayStr() + '/images/';
-  // const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
-  // const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
-  // console.log('mostRecentImage: ', mostRecentImage);
-  // // resize, save, upload.
-  // images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
-  //   const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
-  //   uploader.upload(dest);
-  // });
+  // get most recent raw image.
+  const imageDir = RAWDIR + '/' + todayStr() + '/images/';
+  const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
+  const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
+  console.log('mostRecentImage: ', mostRecentImage);
+  // resize, save, upload.
+  images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
+    const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
+    uploader.mkdir(todayStr());
+    // uploader.upload(dest);
+  });
 
   // fetch data.
-  const data = fetchData();
-  writeData(data)
+  // const data = fetchData();
+  // writeData(data)
 }
 
 function writeData(data) {
