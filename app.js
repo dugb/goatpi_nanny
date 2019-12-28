@@ -41,11 +41,11 @@ function main() {
   const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
   const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
   console.log('mostRecentImage: ', mostRecentImage);
+
   // resize, save, upload.
   images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
     const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
-    uploader.mkdir(todayStr());
-    // uploader.upload(dest);
+    uploader.upload(dest, todayStr());
   });
 
   // fetch data.

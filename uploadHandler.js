@@ -12,33 +12,31 @@ module.exports = class UploadHandler {
   constructor() {
     this.dest = DEST;
     client.defaults({
-      port: 22,
-      host: 'dugb.net',
-      username: 'doug',
+      port: keys.ssh_port,
+      host: keys.host,
+      username: keys.user,
       password: keys.pw,
   });
   }
 
-  upload(file) {
-    console.log('uploading: ', file);
-    client.scp(file, this.dest, err => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('sucess: ', file);
-      }
-    });
-  }
-
-  mkdir(date) {
-    const dir = keys.DEST_DIR + date
-    console.log('mkdir: ', dir)
+  upload(file, date) {
+    const dir = keys.DEST_DIR + date;
+    console.log('mkdir: ', dir);
     client.mkdir(dir, err => {
       if (err) {
-        console.log(err);
+        console.log('mkdir error: ', err);
       } else {
-        console.log('sucess: ', dir);
+        console.log('mkdir: sucess');
+        console.log('uploading: ', file);
+        client.scp(file, this.dest + date, err => {
+          if (err) {
+            console.log('upload error: ', err);
+          } else {
+            console.log('upload sucess: ', file);
+          }
+        });
       }
-    });
+    })
   }
+
 };
