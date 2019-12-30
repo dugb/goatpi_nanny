@@ -28,7 +28,7 @@ module.exports = class UploadHandler {
       } else {
         console.log('mkdir: sucess');
         console.log('uploading: ', file);
-        client.scp(file, this.dest + date, err => {
+        client.scp(file, this.dest + date + '/' + file, err => {
           if (err) {
             console.log('upload error: ', err);
           } else {
