@@ -11,6 +11,7 @@ module.exports = class FileHandler {
   }
 
   /**
+   * @param {string} dir Absolute path.
    * @returns {string}
    */
   getMostRecentlyModifiedFile(dir) {
@@ -38,4 +39,39 @@ module.exports = class FileHandler {
     })
     return (out.length > 0) ? out[0].file : "";
   }
+
+  /**
+   * Finds the most recent directory with available and suitable images,
+   * to upload.
+   * @param {string} path The base directory.
+   * @returns {string} 
+   */
+  findMostRecentDir(path) {
+    console.log('path: ', path);
+    // get a directory listing of path.
+    let dirList = this.getDirectories(path + '/');
+
+    // sort the directory listing by name/date.
+    dirList.sort().reverse();
+
+    // return dir that is not empty.
+    for (const dir of dirList) {
+      if (fs.readdirSync(path + '/' + dir + '/images').length > 0) {
+        return dir + '/images/';
+      }
+    }
+    return undefined;  // did not find a suitable dir.
+  }
+
+  getDirectories(source) {
+    let dirListing = fs.readdirSync(source);
+    let dirList = [];
+    for (const i of dirListing) {
+      if(fs.statSync(source + i).isDirectory()){
+        dirList.push(i);
+      }
+    }
+    return dirList;
+  }
+
 }

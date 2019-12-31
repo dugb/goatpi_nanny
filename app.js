@@ -37,16 +37,24 @@ const files = new FileHandler();
 
 function main() {
   // get most recent raw image.
-  const imageDir = RAWDIR + '/' + todayStr() + '/images/';
-  const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
-  const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
-  console.log('mostRecentImage: ', mostRecentImage);
+  
+  // todo change this to get the most recent date(dir) that contains images.
+  // since todayStr() can change before an image has been updated to the new date(dir).
+  const imageDir = RAWDIR + '/' + files.findMostRecentDir(RAWDIR);
 
-  // resize, save, upload.
-  images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
-    const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
-    uploader.upload(dest, todayStr());
-  });
+  if (imageDir) {
+    const mostRecentImage = files.getMostRecentlyModifiedFile(imageDir)
+    const imagePath = imageDir + files.getMostRecentlyModifiedFile(imageDir);
+    console.log('mostRecentImage: ', mostRecentImage);
+  
+    // resize, save, upload.
+    images.resize(imagePath, mostRecentImage, UPLOADDIR).then(() => {
+      const dest = UPLOADDIR + '/' + mostRecentImage.substr(0,15) + '-new.jpg';
+      uploader.upload(dest, todayStr());
+    });
+  } else {
+    console.log('can not find a suitable directory to upload images from.')
+  }
 
   // fetch data.
   // const data = fetchData();
